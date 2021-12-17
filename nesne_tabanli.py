@@ -3,7 +3,7 @@
 # Örn. list class'ı halihazırda bulunan bir classtır.
 
 ## instance (object)
-# Class'ın kopyasıdır.
+# Class'tan oluşan bir objedir. Örn: kedi classında Tekir isimli bir kedi oluşturulur.
 
 class Person:
     # constructor (yapıcı metod)
