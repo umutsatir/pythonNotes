@@ -47,7 +47,7 @@ for dosya in os.listdir(): # sadece sonu .py olan dosyaları yazdırır.
         print(dosya)
 
 
-sonuc1 = os.stat("_ileri_seviye_modul.py")
+sonuc1 = os.stat("ileri_seviye_modul.py")
 sonuc1 = datetime.datetime.fromtimestamp(sonuc1.st_ctime) # dosyanın oluşturulma tarihini datetime modülüyle düzenliyoruz.
 # ctime = creating time   atime = accessing time   mtime = modifying time
 
@@ -112,5 +112,36 @@ re.findall("[abc]", str) # a, b ve c'yi str içinde arar.
 # \S - Boşluk karakterlerinin dışındakileri arar.
 # \w Alfabetik karakterler, rakamlar ve alt çizgi karakterini arar.
 # \W Alfabetik karakterler, rakamlar ve alt çizgi karakterinin dışındakileri arar.
-
 # Bunların devamını python.org'da da bulabiliriz.
+
+
+
+## JSON Module
+
+import json
+
+person_string = '{"name":"ali", "languages":["python", "C#"]}'
+# JSON string to Dictionary
+result3 = json.loads(person_string)
+print(type(result)) # result Dictionary oldu.
+
+person_dict = {
+    "name":"ali",
+    "languages":["Python","C#"]
+}
+
+result3 = json.dumps(person_dict)
+print(result3) # Dictionary olan result JSON'a dönüştürüldü.
+
+
+
+## Requests Module
+
+import requests
+#import json
+
+result4 = requests.get("https://jsonplaceholder.typicode.com/todos")
+print(result4) # Response[200] cevabı gelir. Yani geri dönüş aldık.
+result4 = json.loads(result4.text)
+print(result4[0]["title"]) # kaydın sıfırıncı indexindeki title kısmını yazdırdık.
+
