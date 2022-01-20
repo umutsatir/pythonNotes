@@ -145,3 +145,38 @@ print(result4) # Response[200] cevabı gelir. Yani geri dönüş aldık.
 result4 = json.loads(result4.text)
 print(result4[0]["title"]) # kaydın sıfırıncı indexindeki title kısmını yazdırdık.
 
+
+
+## Beautiful Soup (Web Scraping)
+from bs4 import BeautifulSoup # pip install beautifulsoup4
+
+html_doc = """
+<!DOCTYPE html>
+<html>
+<body>
+<div class="grup1">
+<h1 id="header">My First Heading</h1>
+<p>My first paragraph.</p>
+</div>
+<div class="grup2">
+</div>
+<div class="grup3">
+<a href="https://google.com" id="link1">Google</a>
+</div>
+</body>
+</html>
+"""
+
+soup = BeautifulSoup(html_doc, "html.parser")
+sonuc3 = soup.prettify() # HTML dokümanını düzenler.
+sonuc3 = soup.title # sadece title bölümünü verir.
+# Örn. eğer title'dan birkaç tane varsa ilk olanı çağırır.
+sonuc3 = soup.find_all("h1") # sayfada bulduğu bütün h1 etiketlerini liste şeklinde getirir.
+sonuc3 = soup.find_all("h1")[0] # listedeki ilk h1'i getirir.
+sonuc3 = soup.find_all("div")[0].h1 # birinci div içindeki h1'i getirir. Bu metotları art arda kullanabiliriz.
+sonuc3 = soup.div.findChildren # div etiketinin alt etiketlerinin hepsini çağırır.
+sonuc3 = soup.div.findNextSibling().findNextSibling() # ilk div'den sonraki div'i; ardından 2. div'den sonraki div'i çağırır.
+
+sonuc3 = soup.find_all("a") # bütün a etiketlerini verir.
+for link in sonuc3:
+    print(link.get("href")) # a etiketlerindeki href yani linkleri verir.
