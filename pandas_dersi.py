@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import pandas as pd
 import numpy as np
 
@@ -71,4 +72,90 @@ df["Column5"] = pd.Series(np.random.randn(3), ["A","B","C"]) # yeni 3 tane rando
 
 
 ## DATAFRAME FİLTRELEME ##
+
+data1 = np.random.randint(10,100,75).reshape(15,5) # 15 satır 5 sütunlu dataframe oluşturduk.
+df2 = pd.DataFrame(data, columns=["Column1", "Column2", "Column3", "Column4", "Column5"])
+
+sonuc2 = df.columns # sütun isimlerini verir
+sonuc2 = df.head() # ilk 5 satır gelir.
+sonuc2 = df.head(10) # ilk 10 satır gelir.
+sonuc2 = df.tail() # son 5 satır gelir.
+sonuc2 = df.tail(10) # son 10 satır gelir.
+sonuc2 = df["Column1"].head() # ilk beş satırın sadece 1. sütunlarını getirir.
+sonuc2 = df[["Column1", "Column2"]].head() # ilk beş satırın 1. ve 2. sütunlarını getirir.
+sonuc2 = df[df > 50] # 50'den büyük olanları getirir, küçük olanları NaN olarak getirir.
+sonuc2 = df[df["Column1"] > 50]["Column1"] # 1. sütundaki 50'den büyük olan sayıları getirir.
+
+sonuc2 = df[5:15][["Column1", "Column2"]].head() 
+# 5 ile 15. satır arasındaki ilk 5 satırın (yani 5,6,7,8 ve 9. satırın) 1. ve 2. sütunlarını getirir.
+
+sonuc2 = df.query("Column1 >= 50 & Column1 % 2 == 0")["Column1"] # sütun 1'deki 50'den büyük ve çift sayıları getirir.
+
+
+
+## DATAFRAMELERDE GROUPBY KULLANIMI ##
+
+df = pd.read_csv("imdb_top_1000.csv")
+
+sonuc3 = df.groupby("IMDB_Rating") # IMDB puanına göre filmleri grupladık. Aynı puandakiler aynı gruba düştü.
+for name in sonuc3:
+    print(name)
+
+sonuc3 = df.groupby("IMDB_Rating").get_group(9.0) # IMDB puanı 9.0 olan filmleri getirir.
+
+sonuc3 = df.groupby("Released_Year")["IMDB_Rating"].mean() # aynı yıllarda çıkan filmlerin yıllarına göre IMDB puan ortalamasını bulur.
+sonuc3 = df.groupby("Released_Year")["Released_Year"].count() # hangi yılda kaç film çıktığını gösterir.
+sonuc3 = df.groupby("Released_Year")["IMDB_Rating"].min() # her yılın en düşük IMDB puanını gösterir.
+sonuc3 = df.groupby("Released_Year")["IMDB_Rating"].max() # her yılın en yüksek IMDB puanını gösterir.
+sonuc3 = df.groupby("Released_Year")["IMDB_Rating"].max()["1999"] # 1999 yılındaki maksimum IMDB puanını gösterir.
+
+sonuc3 = df.groupby("Released_Year")["IMDB_Rating"].agg([np.mean,np.min,np.max]) 
+# numpy kullanarak maksimum, minimum ve ortalamayı tek bir tablo olarak alabiliriz.
+
+sonuc3 = df.groupby("Released_Year")["IMDB_Rating"].agg([np.mean,np.min,np.max]).loc["1999"]
+# sadece 1999 yılının minimum, maksimum ve ortalama IMDB puanlarını tek tabloda alabiliriz.
+
+
+
+## PANDAS İLE KAYIP VE BOZUK VERİ ANALİZİ ##
+
+data2 = np.random.randint(10,100,15).reshape(5,3)
+
+df3 = pd.DataFrame(data, index=["a","c","e","f","h"], columns=["column1","column2","column3"])
+df3 = df3.reindex[["a","b","c","d","e","f","h"]] # indexleri yeniden yazmamızı sağlar. Boş yerleri NaN yapar.
+
+# df3.isnull() NaN olan yerleri True, diğerlerini False döndürür.
+# df3.notnull() NaN olan yerleri False, diğerlerini True döndürür.
+
+sonuc4 = df3.dropna() # NaN değeri olan satır varsa satırı düşürür. (default axis=0 olduğu için satıra göre siler.)
+# eğer axis=1 dersek sütunlarda bir tane bile NaN olursa o sütunu siler.
+
+sonuc4 = df3.dropna(how="all") # tüm satır NaN ise siler, değilse silmez.
+sonuc4 = df3.dropna(subset=["column1","column2"]) # NaN için sadece yazdığımız sütunlara bakar.
+sonuc4 = df3.dropna(thresh=2) # en az 2 tane veri (NaN olmayan) olan kayıtları silmez.
+sonuc4 = df3.fillna(value="no input") # NaN olan yerlere no input yazar. int değer de girilebilir.
+
+def ortalama(df):
+    toplam = df.sum().sum()
+    adet = df.size - df.isnull().sum().sum() # df3.size eleman sayısını verir.
+    return toplam / adet
+
+sonuc4 = df3.fillna(value = ortalama(df3)) # NaN olan yerleri tablodaki bütün değerlerin ortalaması ile doldurur.
+
+
+
+## PANDAS İLE STRİNG FONKSİYONLARI ##
+
+veri = pd.read_csv("imdb_top_1000.csv")
+
+veri.dropna(inplace=True)
+veri["Series_Title"] = veri["Series_Title"].str.upper() # bütün dizi isimlerini büyük harf yapar.
+veri["Series_Title"] = veri["Series_Title"].str.find("a") # a harfi geçen dizi isimlerini arar.
+veri["Series_Title"] = veri["Series_Title"].str.contains("Shawshank") # Shawshank kelimesini içeren kayıtları çeker.
+veri = veri.Series_Title.str.replace(" ","-").str.replace("*", "") # aynı yerden devam edip bir işlem daha yapmak istersek böyle kullanabiliriz.
+# Burada bütün str komutlarını kullanabiliriz.
+
+
+
+## PANDAS İLE JOIN VE MERGE ##
 
