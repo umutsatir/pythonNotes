@@ -159,3 +159,74 @@ veri = veri.Series_Title.str.replace(" ","-").str.replace("*", "") # aynı yerde
 
 ## PANDAS İLE JOIN VE MERGE ##
 
+customers = {
+    "customerID": [1,2,3,4],
+    "firstName": ["ahmet","ali","hasan","canan"],
+    "lastName": ["yılmaz","korkmaz","çelik","toprak"]
+}
+
+orders = {
+    "orderID": [10,11,12,13],
+    "customerID": [1,2,5,7],
+    "orderDate": ["2010-07-04","2010-08-04","2010-07-07","2012-07-04"]
+}
+
+df_customers = pd.DataFrame(customers, columns=["customerID", "firstName", "lastName"])
+df_orders = pd.DataFrame(orders, columns=["orderID","customerID","orderDate"])
+
+# df_customers'a A kümesi ve df_orders'a B kümesi dersek:
+result2 = pd.merge(df_customers,df_orders, how="inner") # AnB (kesişim)
+result2 = pd.merge(df_customers,df_orders, how="left") # A
+result2 = pd.merge(df_customers,df_orders, how="right") # B
+result2 = pd.merge(df_customers,df_orders, how="outer") # AuB (birleşim)
+
+
+customersA = {
+    "customerID": [1,2,3,4],
+    "firstName": ["ahmet","ali","hasan","canan"],
+    "lastName": ["yılmaz","korkmaz","çelik","toprak"]
+}
+
+customersB = {
+    "customerID": [5,6,7,8],
+    "firstName": ["veli","can","hüseyin","baran"],
+    "lastName": ["şatır","cihangir","çelikoğlu","turan"]
+}
+
+result3 = pd.concat(customersA,customersB) # iki dataframe'yi alt alta birleştirir.
+result3 = pd.concat(customersA,customersB, axis=1) # iki dataframe'yi yan yana birleştirir.
+
+
+
+## PANDAS İLE DATAFRAME METOTLARI ##
+
+data3 = {
+    "Column1": [1,2,3,4,5],
+    "Column2": [10,20,13,45,25],
+    "Column3": ["abc","bca","ade","cba","dea"]
+}
+
+df4 = pd.DataFrame(data3)
+
+result4 = df["Column2"].unique() # verilen satırdaki tekrarlamayan bilgilerin hepsini verir.
+result4 = df["Column2"].nunique() # verilen satırdaki tekrarlamayan bilgilerin sayısını verir.
+result4 = df["Column2"].value_counts() # sütundaki hangi değerden kaç tane olduğunu gösterir. Ör: 25'ten 2 tane var vs.
+
+def kareal(x):
+    return x*x
+
+kareal2 = lambda x: x*x # kareal fonksiyonu ile aynı işi görür.
+
+result4 = df["Column2"].apply(kareal) # apply ile sütundaki değerleri vererek fonksiyon çalıştırabiliriz.
+result4 = df["Column3"].apply(len) # aynı şekilde uzunluk metodunu kullandık.
+result4 = df.sort_values("Column2") # küçükten büyüğe sıralar. str ise z-a sıralar.
+result4 = df.sort_values("Column2", ascending=False) # büyükten küçüğe sıralar. str ise a-z sıralar.
+
+data4 = {
+    "Ay": ["Mayıs", "Haziran","Nisan","Mayıs", "Haziran","Nisan","Mayıs", "Haziran"],
+    "Kategori": ["Elektronik","Elektronik","Elektronik","Kitap","Kitap","Kitap","Giyim","Giyim","Giyim"],
+    "Gelir": [20,30,15,14,32,42,12,36,52]
+}
+
+result4 = df.pivot_table(index="Ay", columns="Kategori", values="Gelir") 
+# indexleri Nisan,Mayıs,Haziran; sütunları Elektronik,Kitap,Giyim yapar.
