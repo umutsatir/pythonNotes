@@ -1,7 +1,7 @@
 result = 200/700
 print("the result is {r:1.3}".format(r=result))
-# r:1.3 olunca birlik basamağına bir rakamlık yer bırakır
-# ondalık bölümüne de 3 satırlık yer bırakır.
+# r:1.3 olunca birler basamağına bir rakamlık yer bırakır
+# virgülden sonraki bölüme de 3 satırlık yer bırakır.
 
 
 name, surname = "Umut", "Satır"

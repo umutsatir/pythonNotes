@@ -27,7 +27,7 @@ class MyNumbers:
         return self
     
     def __next__(self):
-        if self.start <= self. stop:
+        if self.start <= self.stop:
             x = self.start
             self.start += 1
             return x
