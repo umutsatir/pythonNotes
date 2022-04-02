@@ -1,18 +1,10 @@
-def sum(self,a,b):
-    self.a = a
-    self.b = b
+def sum(a,b):
     print(a+b)
-def sub(self,a,b):
-    self.a = a
-    self.b = b
+def sub(a,b):
     print(a-b)
-def mul(self,a,b):
-    self.a = a
-    self.b = b
+def mul(a,b):
     print(a*b)
-def div(self,a,b):
-    self.a = a
-    self.b = b
+def div(a,b):
     print(a/b)
 
 while True:
