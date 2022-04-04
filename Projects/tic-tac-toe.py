@@ -2,21 +2,30 @@ class tictactoe():
     def __init__(self) -> None:
         self.board = [["1","2","3"],["4","5","6"],["7","8","9"]]
         self.current = False
+        self.round = 0
         print("Welcome to Tic Tac Toe")
         
-        while True:     
+        while True:
             if self.current == True:
+                break
+            elif self.round == 9:
+                print("\nGAME TIE\n")
                 break
             else:
                 self.p1Choice()
+            
             if self.current == True:
+                break
+            elif self.round == 9:
+                print("\nGAME TIE\n")
                 break
             else:
                 self.p2Choice()
 
     def p1Choice(self): 
+        self.round += 1
         self.Board()
-        x = int(input("Player 1 - Please choose one of these boxes: "))
+        x = int(input("Player 1 (X) - Please choose one of these boxes: "))
         box = self.Choose(x)
         if self.isSelected(box) == True:
             print("\nYou can't choose the chosen one!\n")
@@ -30,8 +39,9 @@ class tictactoe():
                 pass
 
     def p2Choice(self):
+        self.round += 1
         self.Board()
-        y = int(input("Player 2 - Please choose one of these boxes: "))
+        y = int(input("Player 2 (O) - Please choose one of these boxes: "))
         box2 = self.Choose(y)
         if self.isSelected(box2) == True:
             print("\nYou can't choose the chosen one!\n")
