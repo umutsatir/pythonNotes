@@ -125,3 +125,40 @@ def getProductsAgg():
     cursor.execute(sql)
     result = cursor.fetchone()
     print(result)
+
+
+
+## UPDATE FONKSİYONU ##
+
+def updateProducts():
+    connection = mysql.connector.connect(host="localhost", user="root", password="******", database="node-app")
+    cursor = connection.cursor()
+
+    sql = "UPDATE products SET price=5000 where id=1" # id=1 olan ürünün fiyatını 5000 olarak günceller. 
+    cursor.execute(sql)
+    result = cursor.fetchall()
+# update vb. fonksiyonlar için detaylı örnek bkz. Projects/note
+
+
+
+## DELETE FONKSİYONU ##
+
+def deleteProducts():
+    connection = mysql.connector.connect(host="localhost", user="root", password="******", database="node-app")
+    cursor = connection.cursor()
+
+    sql = "DELETE FROM products where id=1" # id=1 olan ürünü siler.
+    cursor.execute(sql)
+    result = cursor.fetchall()
+
+
+
+## İLİŞKİLİ TABLOLARLA ÇALIŞMA ##
+
+def categoryProducts():
+    connection = mysql.connector.connect(host="localhost", user="root", password="******", database="node-app")
+    cursor = connection.cursor()
+
+    sql = "SELECT FROM products INNER JOIN categories on categories.id=products.categoryid"
+    cursor.execute(sql)
+    result = cursor.fetchall()
